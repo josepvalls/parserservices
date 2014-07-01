@@ -1,0 +1,79 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN">
+<html>
+  <head>
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8">
+    <title>Parser Services</title>
+    <link type="text/css" rel="stylesheet" href="/stylesheets/main.css" />
+  </head>
+
+  <body>
+    <h1>Parser Services</h1>
+    <p>I intend to port some parsers and NLP tools to GAE so they can be used from environments where Java might not be available.</p>
+    <h2>Stanford Parser</h2>
+    <p>A simple webservice interfacing the Stanford Parser.</p>
+    <form action="parse" method="GET">
+    	<div class="field">
+	    	<label>Sentence</label><input type="text" name="sent" value="Bell, a company which is based in LA, makes and distributes computer products." size="60">
+	    </div>
+	    <div class="field">
+	    	<label>Output style</label><input type="text" name="print" value="penn" size="60">
+	    </div>
+	   	<div class="field">
+	    	<label>&nbsp;</label><small>use one or more from <em>oneline, penn, latexTree, words, wordsAndTags, rootSymbolOnly, typedDependencies, typedDependenciesCollapsed, semanticGraph, <a href="https://mailman.stanford.edu/pipermail/parser-user/2011-January/000836.html">makeCopulaHead</a></em></small>
+	    </div>
+	    <div class="field">
+	    <label>&nbsp;</label><input type="Submit"/>
+	    </div>
+    </form>
+    <h2>Stanford Core NLP</h2>
+    <form action="nlp" method="POST">
+    	<div class="field">
+	    	<label>Sentence</label><input type="text" name="sent" value="Bell, a company which is based in LA, makes and distributes computer products." size="60">
+	    </div>
+	    <div class="field">
+	    	<label>Annotators</label><input type="text" name="annotators" value="tokenize, ssplit, parse" size="60">
+	    </div>
+	   	<div class="field">
+	    	<label>&nbsp;</label><small>use one or more from <em>tokenize, ssplit, pos, lemma, ner, parse, dcoref</em>; note that <em>pos, lemma, ner, dcoref</em> will not work on a free instance of Google App Engine because of memory limitations</small>
+	    </div>
+	    <div class="field">
+	    	<label>Output style</label><select name="print">
+	    		<option value="prettyPrint">prettyPrint</option>
+	    		<option value="xml" selected="selected">xml</option>
+	    		<option value="toShorterString">toShorterString</option>
+	    		<option value="pennPrint">pennPrint</option>
+	    	</select>
+	    </div>
+	    <div class="field">
+	    <label>&nbsp;</label><input type="Submit"/>
+	    </div>
+    </form>
+    
+    <h2>Apache OpenNLP</h2>
+    <form action="opennlp" method="POST">
+    	<div class="field">
+	    	<label>Sentence</label><input type="text" name="sent" value="Bell, a company which is based in LA, makes and distributes computer products." size="60">
+	    </div>
+	   	<div class="field">
+	    	<label>&nbsp;</label><small> will not work on a free instance of Google App Engine because <a href="http://opennlp.sourceforge.net/models-1.5/">model</a> is +32Mb</small>
+	    </div>
+	    <div class="field">
+	    <label>&nbsp;</label><input type="Submit"/>
+	    </div>
+    </form>
+    
+    <h2>Berkeley Parser</h2>
+    <form action="berkeley" method="POST">
+    	<div class="field">
+	    	<label>Sentence</label><input type="text" name="sent" value="Bell, a company which is based in LA, makes and distributes computer products." size="60">
+	    </div>
+	   	<div class="field">
+	    	<label>&nbsp;</label><small>will not work on a free instance of Google App Engine because of memory limitations</small>
+	    </div>
+	    <div class="field">
+	    <label>&nbsp;</label><input type="Submit"/>
+	    </div>
+    </form>
+    <p>More info at: <a href="http://josep.valls.name">http://josep.valls.name</a> and <a href="http://voz-nlp.appspot.com/">http://voz-nlp.appspot.com/</a> (takes a while to spin a new instance after it's been put to sleep).
+  </body>
+</html>

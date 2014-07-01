@@ -1,0 +1,8 @@
+body {
+    font-family: Verdana, Helvetica, sans-serif;
+}
+div.field label { display: block; width: 140px; float: left }
+div.field div { display: block; float: left }
+div.field { clear: left }
+a {color: #06c}
+small { font-size: 60% }
