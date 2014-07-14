@@ -1,0 +1,26 @@
+Requirement
+-----------
+
+Perl Expect module downloadable from CPAN, http://www.cpan.org
+
+Installation
+------------
+
+go to parser05May06fixed/PARSE and run 'make'.
+
+Running
+-------
+
+Require envionment variable CHARNIAK pointing to Charniak's parser.
+E.g. /home/roth/cogcomp/CharniakServer/parser05May26fixed
+
+Run:
+
+(in bash)
+> nohup ./charniak-server.pl &> charniak-server.log &
+
+(in tcsh)
+> nohup ./charniak-server.pl >& charniak-server.log &
+
+The default server port is 4449.  To change server port, change the value of
+$PORT in charniak-server.pl .

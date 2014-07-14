@@ -1,0 +1,18 @@
+	
+#cat bugReport | parseIt DATA/ 
+#wwBCTest  ../DATA/ /pro/dpg/ecdata/cp2/test.final
+#cat testSent | parseIt ../DATA/ 
+#rParse -T10 -d7799  DATA/ files.txt
+#wwBCTest -M ../DATA/LM/ /pro/dpg/ecdata/lm2/f23-24.unk10.txt
+#parseIt ../DATA/ testSent
+cpath=../DATA/CH/
+ctst=/pro/dpg/hpp/discrim/chinesetestlarge.main
+cbad=/pro/dpg/hpp/discrim/cbad.txt
+#ctst=/pro/dpg/hpp/discrim/test.txt
+#wwBCTest -d0 -T400 -l200 -LCh $cpath $ctst
+
+#qrun -w -g -X -b jobstorun1
+qrun -w -g -X -b jobstorun250
+#finPTest $cpath >> ${cpath}impres.txt
+
+
