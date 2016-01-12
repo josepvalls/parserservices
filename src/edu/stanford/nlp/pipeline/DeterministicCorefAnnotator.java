@@ -167,6 +167,7 @@ public class DeterministicCorefAnnotator implements Annotator {
         }
       }
     } catch (Exception e) {
+    	e.printStackTrace();
       throw new RuntimeException(e);
     }
   }

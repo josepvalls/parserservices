@@ -2,6 +2,7 @@ package edu.drexel.gameailab;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.Map;
 import java.util.Properties;
 
 import javax.servlet.ServletConfig;
@@ -10,12 +11,15 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import edu.stanford.nlp.dcoref.CorefChain;
 import edu.stanford.nlp.ling.CoreAnnotations;
 import edu.stanford.nlp.pipeline.Annotation;
 import edu.stanford.nlp.pipeline.StanfordCoreNLP;
 import edu.stanford.nlp.trees.Tree;
 import edu.stanford.nlp.trees.TreeCoreAnnotations;
 import edu.stanford.nlp.util.CoreMap;
+
+import edu.stanford.nlp.dcoref.CorefCoreAnnotations.CorefChainAnnotation;
 
 @SuppressWarnings("serial")
 public class NLPServlet extends HttpServlet {
@@ -47,6 +51,9 @@ public class NLPServlet extends HttpServlet {
 			try {
 				Properties props = new Properties();
 				props.put("annotators",annotators);
+				props.put("tokenize.options", "americanize=false");
+				//props.put("dcoref.score", "true");
+				//tokenize, ssplit, parse, lemma, ner, dcoref
 				this.pipeline = new StanfordCoreNLP(props);
 				this.annotators = annotators;
 			} catch (Exception e) {
@@ -63,7 +70,13 @@ public class NLPServlet extends HttpServlet {
 		Annotation document = new Annotation(text);
 
 		// run all Annotators on this text
+		if(pipeline==null){
+			resp.getWriter().println("Error creating pipeline");
+		}
 		pipeline.annotate(document);
+		
+		//Map<Integer, CorefChain> graph = document.get(CorefChainAnnotation.class);
+		System.out.println(document.get(CorefChainAnnotation.class));
 		
 		if(req.getParameter("print").equals("prettyPrint"))
 			pipeline.prettyPrint(document, resp.getWriter());
