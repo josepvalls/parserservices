@@ -1,0 +1,102 @@
+package com.carrotsearch.hppc;
+
+import java.util.List;
+import java.util.RandomAccess;
+
+/**
+ * An indexed container provides random access to elements based on an
+ * <code>index</code>. Indexes are zero-based.
+ */
+ @javax.annotation.Generated(date = "2014-09-08T10:42:29+0200", value = "HPPC generated from: IntIndexedContainer.java") 
+public interface IntIndexedContainer extends IntCollection, RandomAccess 
+{
+    /**
+     * Removes the first element that equals <code>e1</code>, returning its 
+     * deleted position or <code>-1</code> if the element was not found.   
+     */
+    public int removeFirstOccurrence(int e1);
+    
+    /**
+     * Removes the last element that equals <code>e1</code>, returning its 
+     * deleted position or <code>-1</code> if the element was not found.   
+     */
+    public int removeLastOccurrence(int e1);
+    
+    /**
+     * Returns the index of the first occurrence of the specified element in this list, 
+     * or -1 if this list does not contain the element.
+     */
+    public int indexOf(int e1);
+    
+    /**
+     * Returns the index of the last occurrence of the specified element in this list, 
+     * or -1 if this list does not contain the element.
+     */
+    public int lastIndexOf(int e1);
+
+    /**
+     * Adds an element to the end of this container (the last index is incremented by one).
+     */
+    public void add(int e1);
+    
+    /**
+     * Inserts the specified element at the specified position in this list.
+     * 
+     * @param index The index at which the element should be inserted, shifting
+     * any existing and subsequent elements to the right.
+     */
+    public void insert(int index, int e1);
+
+    /**
+     * Replaces the element at the specified position in this list 
+     * with the specified element. 
+     * 
+     * @return Returns the previous value in the list.
+     */
+    public int set(int index, int e1);
+
+    /**
+     * @return Returns the element at index <code>index</code> from the list.
+     */
+    public int get(int index);
+    
+    /**
+     * Removes the element at the specified position in this list and returns it.
+     * 
+     * <p><b>Careful.</b> Do not confuse this method with the overridden signature in
+     * Java Collections ({@link List#remove(Object)}). Use: {@link #removeAll},
+     * {@link #removeFirstOccurrence} or {@link #removeLastOccurrence} depending 
+     * on the actual need.</p> 
+     */
+    public int remove(int index);
+
+    /**
+     * Removes from this list all of the elements whose index is between 
+     * <code>fromIndex</code>, inclusive, and <code>toIndex</code>, exclusive.
+     */
+    public void removeRange(int fromIndex, int toIndex);
+
+    /**
+     * Compares the specified object with this container for equality. Returns
+     * <tt>true</tt> if and only if the specified object is also a
+     * {@link IntIndexedContainer}, both have the same size, and all corresponding
+     * pairs of elements at the same index are <i>equal</i>. In other words, two indexed
+     * containers are defined to be equal if they contain the same elements in the same
+     * order.
+     * <p>
+     * Note that, unlike in {@link List}, containers may be of different types and still
+     * return <code>true</code> from {@link #equals}. This may be dangerous if you use
+     * different hash functions in two containers, but don't override the default 
+     * implementation of {@link #equals}. It is the programmer's responsibility to 
+     * enforcing these contracts properly.
+     * </p>
+     */
+    public boolean equals(Object obj);
+
+    /**
+     * @return A hash code of elements stored in the container. The hash code
+     * is defined identically to {@link List#hashCode()} (should be implemented
+     * with the same algorithm).
+     */
+    public int hashCode();
+}
