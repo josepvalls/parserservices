@@ -1,10 +1,16 @@
 package edu.emory.clir.clearnlp.coreference.sieve;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTagEn;
 import edu.emory.clir.clearnlp.pos.POSTagEn;
 public class PreciseConstructMatch extends AbstractSieve{
+
+	public PreciseConstructMatch(ServletContext _context) {
+		super(_context);
+	}
 
 	@Override
 	public boolean match(AbstractMention prev, AbstractMention curr) {

@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.List;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.dictionary.PathDictionary;
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.coreference.type.AttributeType;
@@ -27,12 +29,17 @@ public class SpeakerIdentification extends AbstractSieve{
 	private final Set<String> thirdPersonSingularPronouns = DSUtils.toHashSet("he", "him", "his", "she", "her", "hers", "it", "its");
 	private final Set<String> thirdPersonPluralPronouns = DSUtils.toHashSet("they", "them", "their", "theirs");
 	
-	public SpeakerIdentification(){
+	
+	
+	public SpeakerIdentification(ServletContext _context){
+		super(_context);
 		reportingVerbs = initReportingVerbs();
 	}
 	
 	private Set<String> initReportingVerbs() {
-		InputStream in = IOUtils.createFileInputStream(PathDictionary.REPORT_VERBS);
+		System.out.println("THIS IS THE CONTEXT"+String.valueOf(context));
+		//InputStream in = IOUtils.createFileInputStream(PathDictionary.REPORT_VERBS);
+		InputStream in = context.getResourceAsStream("/WEB-INF/clearnlp/resources/edu/emory/clir/clearnlp/dictionary/coreference/sieve/english_reportVerbs.txt");
 		return DSUtils.createStringHashSet(in);
 	}
 	

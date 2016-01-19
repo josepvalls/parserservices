@@ -76,24 +76,25 @@ public class TaggerServlet extends HttpServlet {
 							//wsj-0-18-bidirectional-nodistsim.tagger.props
 		
 		 MaxentTagger tagger = null;
-		try {
-			tagger = new MaxentTagger(ist,istp);
-		} catch (ClassNotFoundException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		 //tagger.tagString(toTag)
-		 
-		 
-		    PrintWriter pw = resp.getWriter();
-		    DocumentPreprocessor documentPreprocessor = new DocumentPreprocessor(sent);
-		    documentPreprocessor.setTokenizerFactory(PTBTokenizerFactory.newWordTokenizerFactory(""));
-		    for (List<HasWord> sentence : documentPreprocessor) {
-		      List<TaggedWord> tSentence = tagger.tagSentence(sentence);
-		      pw.println(Sentence.listToString(tSentence, false));
-		    }
-		    pw.close();
-		
+//		try {
+//			//tagger = new MaxentTagger(ist,istp);
+//			tagger = new MaxentTagger();
+//		} catch (ClassNotFoundException e) {
+//			// TODO Auto-generated catch block
+//			e.printStackTrace();
+//		}
+//		 //tagger.tagString(toTag)
+//		 
+//		 
+//		    PrintWriter pw = resp.getWriter();
+//		    DocumentPreprocessor documentPreprocessor = new DocumentPreprocessor(sent);
+//		    documentPreprocessor.setTokenizerFactory(PTBTokenizerFactory.newWordTokenizerFactory(""));
+//		    for (List<HasWord> sentence : documentPreprocessor) {
+//		      List<TaggedWord> tSentence = tagger.tagSentence(sentence);
+//		      pw.println(Sentence.listToString(tSentence, false));
+//		    }
+//		    pw.close();
+//		
 		
 		
 		

@@ -56,8 +56,9 @@ public class ClearNLPServlet extends HttpServlet {
 		if(text==null)
 			text="Mary has several mice. She is very cute.";
 
-
-        SieveSystemCongiuration config = new SieveSystemCongiuration(TLanguage.ENGLISH);
+		ServletContext context = getServletContext();
+		System.out.println("THIS IS THE CONTEXT"+String.valueOf(context));
+        SieveSystemCongiuration config = new SieveSystemCongiuration(TLanguage.ENGLISH,context);
         //config.loadDefaultMentionDetectors();
         //config.loadDefaultSieves(true, true, true, true, true, false, false, false);
 
@@ -71,7 +72,7 @@ public class ClearNLPServlet extends HttpServlet {
         List<DEPTree> trees;
         Pair<List<AbstractMention>, CoreferantSet> resolution;
         
-        ServletContext context = getServletContext();
+        //ServletContext context = getServletContext();
         InputStream testFile = context.getResourceAsStream("/WEB-INF/clearnlp/mc500.dev.comprehension1.cnlp");
         
         

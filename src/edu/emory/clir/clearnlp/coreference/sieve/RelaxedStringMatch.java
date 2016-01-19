@@ -4,6 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.dependency.DEPFeat;
 import edu.emory.clir.clearnlp.dependency.DEPLibEn;
@@ -13,12 +15,12 @@ import edu.emory.clir.clearnlp.pos.POSLibEn;
 import edu.emory.clir.clearnlp.util.Joiner;
 
 public class RelaxedStringMatch extends AbstractStringMatch{
-	public RelaxedStringMatch(){
-		super();
+	public RelaxedStringMatch(ServletContext context){
+		super(context);
 	}
 	
-	public RelaxedStringMatch(boolean decapitalize){
-		super(decapitalize);
+	public RelaxedStringMatch(ServletContext context,boolean decapitalize){
+		super(context,decapitalize);
 	}
 	
 	@Override
@@ -33,7 +35,10 @@ public class RelaxedStringMatch extends AbstractStringMatch{
 			removePrepositionalMod(l_subNodes, node);
 	//		removeParticipialMod(l_subNodes, node);
 	
-			return Joiner.join(l_subNodes.stream().map(n -> n.getWordForm()).collect(Collectors.toList()), " ");
+			//return Joiner.join(l_subNodes.stream().map(n -> n.getWordForm()).collect(Collectors.toList()), " ");
+		//JV HACK
+			
+			
 		}
 		return null;
 	}

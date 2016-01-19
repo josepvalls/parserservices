@@ -35,7 +35,7 @@ public class OpenNLPServlet extends HttpServlet {
 			sent = "Bell, a company which is based in LA, makes and distributes computer products.";
 
 	    ServletContext context = getServletContext();
-	    InputStream modelIn = context.getResourceAsStream("/WEB-INF/en-parser-chunking.bin");
+	    InputStream modelIn = context.getResourceAsStream("/WEB-INF/opennlp/en-parser-chunking.bin");
 		
 		ParserTool tool = new ParserTool();
 		try {

@@ -1,17 +1,19 @@
 package edu.emory.clir.clearnlp.coreference.sieve;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 
 /**
  * @author alexlutz
  */
 public class ExactStringMatch extends AbstractStringMatch {
-	public ExactStringMatch(){
-		super();
+	public ExactStringMatch(ServletContext context){
+		super(context);
 	}
 	
-	public ExactStringMatch(boolean decapitalize){
-		super(decapitalize);
+	public ExactStringMatch(ServletContext context, boolean decapitalize){
+		super(context,decapitalize);
 	}
 	
 	@Override

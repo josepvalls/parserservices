@@ -15,6 +15,8 @@
  */
 package edu.emory.clir.clearnlp.coreference.config;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
 /**
@@ -25,9 +27,11 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public abstract class AbstractCorefConfiguration {
 	protected TLanguage language;
 	protected MentionConfiguration mention_config;
+	public ServletContext context;
 	
-	public AbstractCorefConfiguration(TLanguage lang){
+	public AbstractCorefConfiguration(TLanguage lang,  ServletContext _context){
 		language = lang;
+		context = _context;
 	}
 	
 	public MentionConfiguration getMentionConfig(){

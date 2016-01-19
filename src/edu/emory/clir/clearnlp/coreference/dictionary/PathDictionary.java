@@ -21,7 +21,7 @@ package edu.emory.clir.clearnlp.coreference.dictionary;
  * @since 	Jun 25, 2015
  */
 public interface PathDictionary {
-	final String 	ROOT = "src/main/resources/edu/emory/clir/clearnlp/dictionary/";
+	final String 	ROOT = "/WEB-INF/clearnlp/resources/edu/emory/clir/clearnlp/dictionary/";
 	
 	final String 	MENTION = ROOT + "coreference/mention/",
 					SIEVE = ROOT + "/coreference/sieve/",

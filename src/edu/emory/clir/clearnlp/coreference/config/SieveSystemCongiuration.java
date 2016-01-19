@@ -18,6 +18,8 @@ package edu.emory.clir.clearnlp.coreference.config;
 import java.util.ArrayList;
 import java.util.List;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.sieve.AbstractSieve;
 import edu.emory.clir.clearnlp.coreference.sieve.ExactStringMatch;
 import edu.emory.clir.clearnlp.coreference.sieve.PreciseConstructMatch;
@@ -28,6 +30,8 @@ import edu.emory.clir.clearnlp.coreference.sieve.SpeakerIdentification;
 import edu.emory.clir.clearnlp.coreference.sieve.StrictHeadMatch;
 import edu.emory.clir.clearnlp.util.lang.TLanguage;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author 	Yu-Hsin(Henry) Chen ({@code yu-hsin.chen@emory.edu})
  * @version	1.0
@@ -36,9 +40,11 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public class SieveSystemCongiuration extends AbstractCorefConfiguration{
 	private List<AbstractSieve> selectedSieves;
 	
-	public SieveSystemCongiuration(TLanguage lang){
-		super(lang);
+	public SieveSystemCongiuration(TLanguage lang, ServletContext _context){
+		super(lang,_context);
+		System.out.println("THIS IS THE CONTEXT"+String.valueOf(_context));
 		selectedSieves = new ArrayList<>();
+		
 	}
 	
 	public List<AbstractSieve> getSieves(){
@@ -50,22 +56,23 @@ public class SieveSystemCongiuration extends AbstractCorefConfiguration{
 	}
 	
 	public void loadDefaultSieves(boolean decapitalize){	
-		selectedSieves.add(new SpeakerIdentification());
-		selectedSieves.add(new ExactStringMatch(decapitalize));	
-		selectedSieves.add(new RelaxedStringMatch(decapitalize));
-		selectedSieves.add(new PreciseConstructMatch());
-		selectedSieves.add(new StrictHeadMatch());
-		selectedSieves.add(new ProperHeadWordMatch());
-		selectedSieves.add(new PronounMatch());
+		selectedSieves.add(new SpeakerIdentification(context));
+		selectedSieves.add(new ExactStringMatch(context,decapitalize));	
+		selectedSieves.add(new RelaxedStringMatch(context,decapitalize));
+		selectedSieves.add(new PreciseConstructMatch(context));
+		selectedSieves.add(new StrictHeadMatch(context));
+		selectedSieves.add(new ProperHeadWordMatch(context));
+		selectedSieves.add(new PronounMatch(context));
 	}
 	
 	public void loadDefaultSieves(boolean decapitalize, boolean speakerIdentification, boolean exactStringMatch, boolean relaxedStringMatch, boolean preciseContuctMatch, boolean stringHeadMatch, boolean properHeadWordMatch, boolean pronunMatch){
-		if(speakerIdentification) 	selectedSieves.add(new SpeakerIdentification());
-		if(exactStringMatch) 	selectedSieves.add(new ExactStringMatch(decapitalize));	
-		if(relaxedStringMatch)	selectedSieves.add(new RelaxedStringMatch(decapitalize));
-		if(preciseContuctMatch)	selectedSieves.add(new PreciseConstructMatch());
-		if(stringHeadMatch)		selectedSieves.add(new StrictHeadMatch());
-		if(properHeadWordMatch)	selectedSieves.add(new ProperHeadWordMatch());
-		if(pronunMatch)			selectedSieves.add(new PronounMatch());
+		System.out.println("THIS IS THE CONTEXT"+String.valueOf(context));
+		if(speakerIdentification) 	selectedSieves.add(new SpeakerIdentification(context));
+		if(exactStringMatch) 	selectedSieves.add(new ExactStringMatch(context, decapitalize));	
+		if(relaxedStringMatch)	selectedSieves.add(new RelaxedStringMatch(context,decapitalize));
+		if(preciseContuctMatch)	selectedSieves.add(new PreciseConstructMatch(context));
+		if(stringHeadMatch)		selectedSieves.add(new StrictHeadMatch(context));
+		if(properHeadWordMatch)	selectedSieves.add(new ProperHeadWordMatch(context));
+		if(pronunMatch)			selectedSieves.add(new PronounMatch(context));
 	}
 }

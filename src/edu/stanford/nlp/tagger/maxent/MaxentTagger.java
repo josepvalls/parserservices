@@ -270,6 +270,14 @@ public class MaxentTagger implements Function<List<? extends HasWord>,ArrayList<
     this(modelFile, config, true);
   }
 
+  
+  public MaxentTagger(InputStream modelFile, TaggerConfig config)
+		    throws IOException, ClassNotFoundException
+		  {
+		    this(modelFile, config, true);
+		  }
+
+  
   /**
    * Constructor for getting a tagger using the model path stored in the TaggerConfig.
    *

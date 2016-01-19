@@ -4,6 +4,8 @@ import java.io.InputStream;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.dictionary.PathDictionary;
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.util.DSUtils;
@@ -19,14 +21,15 @@ public class StrictHeadMatch extends AbstractSieve {
 	
 	private Set<String> s_stopwords;
 	
-	public StrictHeadMatch() {
-		super();
+	public StrictHeadMatch(ServletContext context) {
+		super(context);
 		s_stopwords = initStopWords();
 	}
 	
 	private Set<String> initStopWords(){
-		InputStream in = IOUtils.createFileInputStream(PathDictionary.ENG_STOPWORDS);
-		return DSUtils.createStringHashSet(in);
+		//InputStream in = IOUtils.createFileInputStream(PathDictionary.ENG_STOPWORDS);
+		
+		return DSUtils.createStringHashSet(context.getResourceAsStream(PathDictionary.ENG_STOPWORDS));
 	}
 	
 	@Override
@@ -42,10 +45,11 @@ public class StrictHeadMatch extends AbstractSieve {
 //		return DSUtils.hasIntersection(prev.getAncestorWords(), curr.getAncestorWords());
 //	}
 	
-	private boolean matchWordInclusion(AbstractMention prev, AbstractMention curr){		
-		Set<String> prev_words = prev.getSubTreeWordList().stream().map(word -> StringUtils.toLowerCase(word)).filter(word -> !s_stopwords.contains(word)).collect(Collectors.toSet()),
+	private boolean matchWordInclusion(AbstractMention prev, AbstractMention curr){	
+		return false; 		//JV HACK
+ /*Set<String> prev_words = prev.getSubTreeWordList().stream().map(word -> StringUtils.toLowerCase(word)).filter(word -> !s_stopwords.contains(word)).collect(Collectors.toSet()),
 				curr_words = curr.getSubTreeWordList().stream().map(word -> StringUtils.toLowerCase(word)).filter(word -> !s_stopwords.contains(word)).collect(Collectors.toSet());
-		return (!prev_words.isEmpty() && !curr_words.isEmpty()) && prev_words.containsAll(curr_words);
+		return (!prev_words.isEmpty() && !curr_words.isEmpty()) && prev_words.containsAll(curr_words);*/
 	}
 	
 	/* Additional rules need for specification (ie. The happy cute "couple" is happy with the happy cute "dogs".)  */

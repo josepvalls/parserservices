@@ -1,5 +1,7 @@
 package edu.emory.clir.clearnlp.coreference.sieve;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.util.StringUtils;
 /**
@@ -10,11 +12,13 @@ public abstract class AbstractStringMatch extends AbstractSieve {
 	
 	protected boolean decapitalize;
 	
-	public AbstractStringMatch(){
+	public AbstractStringMatch(ServletContext context){
+		super(context);
 		decapitalize = false;
 	}
 	
-	public AbstractStringMatch(boolean decapitalize){
+	public AbstractStringMatch(ServletContext context,boolean decapitalize){
+		super(context);
 		setDecapitalize(decapitalize);
 	}
 	

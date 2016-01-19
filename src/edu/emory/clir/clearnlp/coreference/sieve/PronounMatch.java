@@ -24,6 +24,8 @@ import edu.emory.clir.clearnlp.util.DSUtils;
 import java.util.List;
 import java.util.regex.Pattern;
 
+import javax.servlet.ServletContext;
+
 /**
  * @author 	Yu-Hsin(Henry) Chen ({@code yu-hsin.chen@emory.edu})
  * @version	1.0
@@ -31,6 +33,11 @@ import java.util.regex.Pattern;
  */
 public class PronounMatch extends AbstractSieve {
 	
+	public PronounMatch(ServletContext _context) {
+		super(_context);
+		// TODO Auto-generated constructor stub
+	}
+
 	/* Argument infomation */
 	final private Pattern verb = Pattern.compile("VB[D||P||Z]{0,1}");
 	final private List<String> argumentSlot = DSUtils.toArrayList(DEPTagEn.DEP_SUBJ, DEPTagEn.DEP_AGENT, DEPTagEn.DEP_DOBJ, DEPTagEn.DEP_IOBJ, DEPTagEn.DEP_POBJ); 

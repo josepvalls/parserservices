@@ -4,6 +4,8 @@ import java.util.List;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTagEn;
@@ -16,6 +18,11 @@ import edu.emory.clir.clearnlp.util.StringUtils;
  */
 public class ProperHeadWordMatch extends AbstractSieve
 {
+	public ProperHeadWordMatch(ServletContext _context) {
+		super(_context);
+		// TODO Auto-generated constructor stub
+	}
+
 	private final Set<String> s_articles = DSUtils.toHashSet("a", "an", "the");
 	
 	@Override
@@ -27,11 +34,12 @@ public class ProperHeadWordMatch extends AbstractSieve
 	
 
 	private boolean matchNumMod(AbstractMention prev, AbstractMention curr){
-		if(curr.hasSameHeadNode(prev)){
+		//JV HACK
+		/*		if(curr.hasSameHeadNode(prev)){
 			List<String> 	l_prevDependents = prev.getNode().getDependentListByLabel(DEPTagEn.DEP_NUMMOD).stream().map(node -> node.getWordForm()).collect(Collectors.toList()),
 							l_currDependents = curr.getNode().getDependentListByLabel(DEPTagEn.DEP_NUMMOD).stream().map(node -> node.getWordForm()).collect(Collectors.toList());
 			return l_prevDependents.equals(l_currDependents);
-		}
+		}*/
 		return true;
 	}
 	
