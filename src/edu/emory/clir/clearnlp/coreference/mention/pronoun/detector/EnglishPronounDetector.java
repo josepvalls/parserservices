@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.constituent.CTLibEn;
 import edu.emory.clir.clearnlp.coreference.dictionary.PathDictionary;
 import edu.emory.clir.clearnlp.coreference.mention.pronoun.Pronoun;
@@ -41,8 +43,8 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public class EnglishPronounDetector extends AbstractPronounDetector {
 	private static final long serialVersionUID = -8181557080414575892L;
 		
-	public EnglishPronounDetector() { 
-		super(TLanguage.ENGLISH); 
+	public EnglishPronounDetector(ServletContext context) { 
+		super(context,TLanguage.ENGLISH); 
 	}
 	
 	@Override
@@ -50,7 +52,8 @@ public class EnglishPronounDetector extends AbstractPronounDetector {
 		Map<String, Pronoun> map = new HashMap<>();
 		
 		try {
-			InputStream dict = new FileInputStream(PathDictionary.ENG_PRONOUN);
+			InputStream dict = context.getResourceAsStream(PathDictionary.ENG_PRONOUN);
+			//InputStream dict = new FileInputStream(PathDictionary.ENG_PRONOUN);
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(dict));
 			String line; String[] attr;

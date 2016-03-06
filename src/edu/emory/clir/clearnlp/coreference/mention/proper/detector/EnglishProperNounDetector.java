@@ -15,8 +15,13 @@
  */
 package edu.emory.clir.clearnlp.coreference.mention.proper.detector;
 
+import java.io.InputStream;
+
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.collection.ngram.Unigram;
 import edu.emory.clir.clearnlp.constituent.CTLibEn;
+import edu.emory.clir.clearnlp.coreference.dictionary.PathDictionary;
 import edu.emory.clir.clearnlp.coreference.mention.proper.ProperNoun;
 import edu.emory.clir.clearnlp.coreference.type.EntityType;
 import edu.emory.clir.clearnlp.coreference.type.GenderType;
@@ -39,13 +44,17 @@ public class EnglishProperNounDetector extends AbstractProperNounDetector{
 	private Unigram<String> m_femaleNames;
 	private Unigram<String> m_maleNames;
 	
-	public EnglishProperNounDetector() { 
-		super(TLanguage.ENGLISH); 
+	public EnglishProperNounDetector(ServletContext context) { 
+		super(context,TLanguage.ENGLISH); 
 		m_femaleNames = new Unigram<>();
 		m_maleNames = new Unigram<>();
 		
-		addDictionary(IOUtils.getInputStreamsFromClasspath(PathNamedEntity.US_FEMALE_NAMES), m_femaleNames);
-		addDictionary(IOUtils.getInputStreamsFromClasspath(PathNamedEntity.US_MALE_NAMES), m_maleNames);
+		//addDictionary(IOUtils.getInputStreamsFromClasspath(PathNamedEntity.US_FEMALE_NAMES), m_femaleNames);
+		//addDictionary(IOUtils.getInputStreamsFromClasspath(PathNamedEntity.US_MALE_NAMES), m_maleNames);
+		
+		addDictionary(context.getResourceAsStream(PathNamedEntity.US_FEMALE_NAMES), m_femaleNames);
+		addDictionary(context.getResourceAsStream(PathNamedEntity.US_MALE_NAMES), m_maleNames);
+		
 	}
 
 	@Override

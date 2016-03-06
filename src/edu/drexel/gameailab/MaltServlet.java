@@ -31,7 +31,7 @@ public class MaltServlet extends HttpServlet {
 		String sent = req.getParameter("sent");
 
 		if(sent==null)
-			sent = "Bell, a company which is based in LA, makes and distributes computer products.";
+			sent = "NOT IMPLEMENTED YET";
 		resp.getWriter().println(sent);
 		
 		

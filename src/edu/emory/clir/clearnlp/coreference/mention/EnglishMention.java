@@ -80,12 +80,18 @@ public class EnglishMention extends AbstractMention{
 	@Override
 	public String getAcronym() {
 		if(!isMultipleMention() && (getNode().isPOSTag(POSTagEn.POS_NNP) || getNode().isPOSTag(POSTagEn.POS_NNPS))){
-			String phrase = Joiner.join(getSubTreeNodes().stream()
-					.filter(node -> node.isPOSTag(CTLibEn.POS_NNP) || node.isPOSTag(CTLibEn.POS_NNPS))
-					.map(node -> node.getWordForm())
-					.collect(Collectors.toList()), " ");
-		
-			if(!phrase.isEmpty())	return CoreferenceStringUtils.getAllUpperCaseLetters(phrase);
+			StringBuilder b = new StringBuilder();
+			for(DEPNode node : getSubTreeNodes()){
+				if(node.isPOSTag(CTLibEn.POS_NNP) || node.isPOSTag(CTLibEn.POS_NNPS)){
+					b.append(node.getWordForm());
+					b.append(' ');
+				}
+			}
+			if(b.length()>1){
+				b.setLength(b.length()-1);
+				return CoreferenceStringUtils.getAllUpperCaseLetters(b.toString());
+			}
+			//if(!phrase.isEmpty())	return CoreferenceStringUtils.getAllUpperCaseLetters(phrase);
 		}
 		return null;
 	}

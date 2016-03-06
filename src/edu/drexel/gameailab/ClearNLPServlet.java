@@ -13,6 +13,11 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import edu.emory.clir.clearnlp.collection.pair.Pair;
+import edu.emory.clir.clearnlp.component.AbstractComponent;
+import edu.emory.clir.clearnlp.component.mode.dep.DEPConfiguration;
+import edu.emory.clir.clearnlp.component.mode.srl.SRLConfiguration;
+import edu.emory.clir.clearnlp.component.utils.GlobalLexica;
+import edu.emory.clir.clearnlp.component.utils.NLPUtils;
 import edu.emory.clir.clearnlp.coreference.AbstractCoreferenceResolution;
 import edu.emory.clir.clearnlp.coreference.SieveSystemCoreferenceResolution;
 import edu.emory.clir.clearnlp.coreference.config.SieveSystemCongiuration;
@@ -21,6 +26,7 @@ import edu.emory.clir.clearnlp.coreference.utils.structures.CoreferantSet;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTree;
 import edu.emory.clir.clearnlp.reader.TSVReader;
+import edu.emory.clir.clearnlp.tokenization.AbstractTokenizer;
 import edu.emory.clir.clearnlp.util.FileUtils;
 import edu.emory.clir.clearnlp.util.Joiner;
 import edu.emory.clir.clearnlp.util.lang.TLanguage;
@@ -57,66 +63,33 @@ public class ClearNLPServlet extends HttpServlet {
 			text="Mary has several mice. She is very cute.";
 
 		ServletContext context = getServletContext();
-		System.out.println("THIS IS THE CONTEXT"+String.valueOf(context));
-        SieveSystemCongiuration config = new SieveSystemCongiuration(TLanguage.ENGLISH,context);
-        //config.loadDefaultMentionDetectors();
-        //config.loadDefaultSieves(true, true, true, true, true, false, false, false);
-
-        //SieveSystemCongiuration config = new SieveSystemCongiuration(TLanguage.ENGLISH);
-        config.loadMentionDetectors(true, false, true);
-        config.loadDefaultSieves(false, true, true, false, true, true, true, true);
-
-        AbstractCoreferenceResolution coref = new SieveSystemCoreferenceResolution((SieveSystemCongiuration) config);
-        //List<String> l_filePaths = FileUtils.getFileList("src/test/resources/edu/emory/clir/clearnlp/coreference/coref/microsoft/parsed", ".cnlp", false);
-
-        List<DEPTree> trees;
-        Pair<List<AbstractMention>, CoreferantSet> resolution;
-        
-        //ServletContext context = getServletContext();
-        InputStream testFile = context.getResourceAsStream("/WEB-INF/clearnlp/mc500.dev.comprehension1.cnlp");
-        
-        
-            trees = getTestDocuments(testFile, 9);
-            resolution = coref.getEntities(trees);
-
-            printCorefCluster(resolution.o1,resolution.o2,resp);
 		
 		
-		resp.getWriter().println(text);
+		TLanguage language = TLanguage.ENGLISH;
+		AbstractTokenizer tokenizer  = NLPUtils.getTokenizer(language);
+		
+		NLPUtils.context = context;
+		
+	
+		GlobalLexica.initDistributionalSemanticsWords("/WEB-INF/clearnlp/brown-rcv1.clean.tokenized-CoNLL03.txt-c1000-freq1.txt.xz");
+		GlobalLexica.initNamedEntityDictionary("/WEB-INF/clearnlp/general-en-ner-gazetteer.xz");
+		
+		// initialize statistical models
+		AbstractComponent morph = NLPUtils.getMPAnalyzer(language);
+		AbstractComponent pos = NLPUtils.getPOSTagger   (language, "/WEB-INF/clearnlp/general-en-pos.xz");
+		AbstractComponent dep = NLPUtils.getDEPParser   (language, "/WEB-INF/clearnlp/general-en-dep.xz", new DEPConfiguration("root"));
+		AbstractComponent srl = NLPUtils.getSRLabeler   (language, "/WEB-INF/clearnlp/general-en-srl.xz", new SRLConfiguration(4, 3));
+		AbstractComponent ner = NLPUtils.getNERecognizer(language, "/WEB-INF/clearnlp/general-en-ner.xz");
+
+		AbstractComponent[] components = new AbstractComponent[]{pos, morph, dep, srl, ner};
+		List<String> tokens = tokenizer.tokenize("I have a new employee.");
+		DEPTree tree = new DEPTree(tokens);
+		for (AbstractComponent component : components)
+			component.process(tree);
+		System.out.println(tree.toString()+"\n");
+		resp.getWriter().println(tree.toString());
+
+		
 
 	}
-	  public  List<DEPTree> getTestDocuments(InputStream in, int NERpos) {
-	        DEPTree tree;
-	        List<DEPTree> trees = new ArrayList<>();
-
-	        try {
-	            TSVReader reader = new TSVReader(0, 1, 2, 3, NERpos, 4, 5, 6, -1, -1);
-	            reader.open(in);
-
-	            while ((tree = reader.next()) != null) {
-	                trees.add(tree);
-	            }
-	        } catch (Exception e) {
-	            e.printStackTrace();
-	        }
-
-	        return trees;
-	    }
-	
-    public void printCorefCluster(List<AbstractMention> mentions, CoreferantSet set,HttpServletResponse resp) throws IOException {
-
-        AbstractMention mention;
-        int i, linkedId, size = mentions.size();
-
-        for (i = 0; i < size; i++) {
-            mention = mentions.get(i);
-            linkedId = set.findClusterHead(i);
-
-            if (linkedId == i) {
-            	resp.getWriter().println(i + ": " + mention.getWordFrom() + "\t(Singleton)");
-            } else {
-            	resp.getWriter().println(i + ": " + mention.getWordFrom() + "\t->\t" + linkedId + ": " + mentions.get(linkedId).getWordFrom());
-            }
-        }
-    }
 }

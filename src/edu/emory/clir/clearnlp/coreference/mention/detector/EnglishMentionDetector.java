@@ -23,6 +23,7 @@ import java.util.Set;
 
 import edu.emory.clir.clearnlp.collection.pair.IntIntPair;
 import edu.emory.clir.clearnlp.coreference.config.MentionConfiguration;
+import edu.emory.clir.clearnlp.coreference.config.SieveSystemCongiuration;
 import edu.emory.clir.clearnlp.coreference.mention.AbstractMention;
 import edu.emory.clir.clearnlp.coreference.mention.EnglishMention;
 import edu.emory.clir.clearnlp.coreference.mention.common.CommonNoun;
@@ -47,11 +48,11 @@ public class EnglishMentionDetector extends AbstractMentionDetector{
 	private EnglishCommonNounDetector commonNounDetector;
 	private EnglishProperNounDetector properNounDetector;
 	
-	public EnglishMentionDetector(MentionConfiguration config){
-		super(config);
-		if(m_config.b_pronoun)	pronounDetector = new EnglishPronounDetector();
-		if(m_config.b_common)	commonNounDetector = new EnglishCommonNounDetector();
-		if(m_config.b_proper)	properNounDetector = new EnglishProperNounDetector(); 
+	public EnglishMentionDetector(SieveSystemCongiuration config){
+		super(config.getMentionConfig());
+		if(m_config.b_pronoun)	pronounDetector = new EnglishPronounDetector(config.context);
+		if(m_config.b_common)	commonNounDetector = new EnglishCommonNounDetector(config.context);
+		if(m_config.b_proper)	properNounDetector = new EnglishProperNounDetector(config.context); 
 	}
 
 //	====================================== MENTION TYPE ======================================

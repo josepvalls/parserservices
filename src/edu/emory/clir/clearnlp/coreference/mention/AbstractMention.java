@@ -16,6 +16,7 @@
 package edu.emory.clir.clearnlp.coreference.mention;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.Collections;
 import java.util.HashSet;
 import java.util.List;
@@ -308,8 +309,17 @@ public abstract class AbstractMention implements Serializable {
 	
 	/* String handling methods */
 	public String getWordFrom(){
-		if(isMultipleMention())
-			return Joiner.join(l_subMentions.stream().map(m -> m.getWordFrom()).collect(Collectors.toList()), StringConst.COMMA);
+		if(isMultipleMention()){
+				StringBuilder b = new StringBuilder();
+				for(AbstractMention node: l_subMentions){
+					b.append(node.getWordFrom());
+					b.append(',');
+				}
+				b.setLength(b.length()-1);
+				return b.toString();
+
+		}
+			//return Joiner.join(l_subMentions.stream().map(m -> m.getWordFrom()).collect(Collectors.toList()), StringConst.COMMA);
 		return d_node.getWordForm();
 	}
 	
@@ -317,22 +327,56 @@ public abstract class AbstractMention implements Serializable {
 		return d_node.getLemma();
 	}
 
-	public String getSubTreeWordSequence(){
-		return (hasSubTreeNodes())? Joiner.join(getSubTreeWordList(), " ") : null;
+	public String getSubTreeWordSequence(boolean decapitalize){
+		if(hasSubTreeNodes()){
+			StringBuilder b = new StringBuilder();
+			for(String node : getSubTreeWordList(decapitalize)){
+				b.append(node);
+				b.append(' ');
+			}
+			b.setLength(b.length()-1);
+			return b.toString();
+		} else return null;
+		//return (hasSubTreeNodes())? Joiner.join(getSubTreeWordList(), " ") : null;
 	}
 	
-	public String getSubTreeWordSequence(boolean decapitalize){
-		return (hasSubTreeNodes())? Joiner.join(getSubTreeWordList(decapitalize), " ") : null;
+	public String getSubTreeWordSequence(){
+		return getSubTreeWordSequence(false);
 	}
 	
 	public List<String> getSubTreeWordList(){
-		return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm()).collect(Collectors.toList()) : null;
+		//return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm()).collect(Collectors.toList()) : null;
+		if(hasSubTreeNodes()){
+			List<String> lst = new ArrayList<String>();
+			for(DEPNode node: getSubTreeNodes()){
+				lst.add(node.getWordForm());
+			}
+			return lst;
+		} else {
+			return null;
+		}
 	}
 	
 	public List<String> getSubTreeWordList(boolean decapitalize){
-		if(decapitalize)
-			return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm().toLowerCase()).collect(Collectors.toList()) : null;
-		return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm()).collect(Collectors.toList()) : null;
+		if(hasSubTreeNodes()){
+			List<String> lst = new ArrayList<String>();
+			for(DEPNode node: getSubTreeNodes()){
+				if(decapitalize){
+					lst.add(node.getWordForm().toLowerCase());	
+				} else {
+					lst.add(node.getWordForm());
+				}
+			}
+			return lst;
+		} else {
+			return null;
+		}
+
+		
+		//if(decapitalize){
+			//return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm().toLowerCase()).collect(Collectors.toList()) : null;
+		//}
+		//return (hasSubTreeNodes())? getSubTreeNodes().stream().map(node -> node.getWordForm()).collect(Collectors.toList()) : null;
 	}
 	
 	public String getHeadNodeWordForm(){
@@ -340,7 +384,13 @@ public abstract class AbstractMention implements Serializable {
 	}
 
 	public Set<String> getAncestorWords(){
-		return getNode().getAncestorSet().stream().map(node -> node.getWordForm()).collect(Collectors.toSet());
+		Set<String> set = new HashSet<String>();
+		for(DEPNode node: getNode().getAncestorSet()){
+			set.add(node.getWordForm());
+			
+		}
+		return set;
+		//return getNode().getAncestorSet().stream().map(node -> node.getWordForm()).collect(Collectors.toSet());
 	}
 	
 	/* Abstract methods */
@@ -354,18 +404,34 @@ public abstract class AbstractMention implements Serializable {
 	
 	@Override
 	public String toString(){
-		StringJoiner joiner = new StringJoiner("\t");
+		//StringJoiner joiner = new StringJoiner("\t");
+		StringBuilder b = new StringBuilder();
 		
-		if(isMultipleMention())
-			joiner.add(Joiner.join(l_subMentions.stream().map(m -> m.getWordFrom()).collect(Collectors.toList()), StringConst.COMMA));
-		else
-			joiner.add(getWordFrom() + StringConst.AT + getTreeId() + StringConst.PERIOD + getNode().getID());
+		if(isMultipleMention()){
+			StringBuilder c = new StringBuilder();
+			for(AbstractMention node : l_subMentions){
+				c.append(node.getWordFrom());
+				c.append(',');				
+			}
+			//joiner.add(Joiner.join(l_subMentions.stream().map(m -> m.getWordFrom()).collect(Collectors.toList()), StringConst.COMMA));
+			c.setLength(c.length()-1);
+			b.append(c.toString());
+			b.append('\t');
+		}
+		else{
+			//joiner.add(getWordFrom() + StringConst.AT + getTreeId() + StringConst.PERIOD + getNode().getID());
+			b.append(getWordFrom() + StringConst.AT + getTreeId() + StringConst.PERIOD + getNode().getID() + '\t');
+		}
 
-		joiner.add((t_entity == null)? StringConst.UNDERSCORE : t_entity.toString());
-		joiner.add((t_gender == null)? StringConst.UNDERSCORE : t_gender.toString());
-		joiner.add((t_number == null)? StringConst.UNDERSCORE : t_number.toString());
-		joiner.add((t_pronoun == null)? StringConst.UNDERSCORE : t_pronoun.toString());
-		joiner.add(m_attr.toString());
-		return joiner.toString();
+		b.append((t_entity == null)? StringConst.UNDERSCORE : t_entity.toString());
+		b.append('\t');
+		b.append((t_gender == null)? StringConst.UNDERSCORE : t_gender.toString());
+		b.append('\t');
+		b.append((t_number == null)? StringConst.UNDERSCORE : t_number.toString());
+		b.append('\t');
+		b.append((t_pronoun == null)? StringConst.UNDERSCORE : t_pronoun.toString());
+		b.append('\t');
+		b.append(m_attr.toString());
+		return b.toString();
 	}
 }

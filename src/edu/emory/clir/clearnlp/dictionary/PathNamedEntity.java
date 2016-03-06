@@ -21,7 +21,8 @@ package edu.emory.clir.clearnlp.dictionary;
  */
 public interface PathNamedEntity
 {
-	String ROOT	= "edu/emory/clir/clearnlp/dictionary/ner/";
+	String 	ROOT = "/WEB-INF/clearnlp/resources/edu/emory/clir/clearnlp/dictionary/ner/";
+	//String ROOT	= "edu/emory/clir/clearnlp/dictionary/ner/";
 	String US = ROOT + "us/";
 	
 	// US

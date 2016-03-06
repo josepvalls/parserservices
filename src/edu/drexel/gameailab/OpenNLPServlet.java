@@ -2,6 +2,7 @@ package edu.drexel.gameailab;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.PrintWriter;
 
 import javax.servlet.ServletConfig;
 import javax.servlet.ServletContext;
@@ -11,14 +12,21 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import opennlp.tools.cmdline.TerminateToolException;
+import opennlp.tools.cmdline.parser.ParserModelLoader;
 import opennlp.tools.cmdline.parser.ParserTool;
+import opennlp.tools.parser.AbstractBottomUpParser;
+import opennlp.tools.parser.ParserFactory;
+import opennlp.tools.parser.ParserModel;
 
 
 @SuppressWarnings("serial")
 public class OpenNLPServlet extends HttpServlet {
+	ParserModel model = null;
+	opennlp.tools.parser.Parser parser = null;
 	@Override
 	public void init(ServletConfig config) throws ServletException {
 		super.init(config);
+		
 	}
 	@Override
 	public void doPost(HttpServletRequest req, HttpServletResponse resp)
@@ -37,9 +45,20 @@ public class OpenNLPServlet extends HttpServlet {
 	    ServletContext context = getServletContext();
 	    InputStream modelIn = context.getResourceAsStream("/WEB-INF/opennlp/en-parser-chunking.bin");
 		
-		ParserTool tool = new ParserTool();
+		//ParserTool tool = new ParserTool();
+	    //tool.run(modelIn,sent,resp.getWriter());
 		try {
-			tool.run(modelIn,sent,resp.getWriter());
+			if(parser==null){
+				ParserModel model = new ParserModelLoader().load(modelIn);
+			      Integer beamSize = AbstractBottomUpParser.defaultBeamSize;
+			      Integer numParses = 1;
+			      boolean showTopK = false;
+			      double advancePercentage = AbstractBottomUpParser.defaultAdvancePercentage;
+			      this.parser =
+			          ParserFactory.create(model, beamSize, advancePercentage);
+			}
+			ParserTool.parse(model, sent, resp.getWriter(), false, 1, this.parser);
+			
 		} catch (TerminateToolException e) {
 
 			if (e.getMessage() != null) {

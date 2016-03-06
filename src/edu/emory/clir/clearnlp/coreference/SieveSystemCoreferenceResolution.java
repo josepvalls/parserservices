@@ -41,7 +41,7 @@ public class SieveSystemCoreferenceResolution extends AbstractCoreferenceResolut
 		// Mention Detector declaration
 		super(config);
 		if(config.getMentionConfig() == null)	throw new IllegalArgumentException("Mention detector configuration not sepecified.");
-		m_detector = new EnglishMentionDetector(config.getMentionConfig());
+		m_detector = new EnglishMentionDetector(config);
 		
 		// Sieve layer class declarations
 		if(config.getSieves().isEmpty()) 	System.out.println("WARNING: No coreference sieve initialized.");

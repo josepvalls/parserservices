@@ -23,6 +23,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Set;
 
+import javax.servlet.ServletContext;
+
 import org.tukaani.xz.XZInputStream;
 
 import edu.emory.clir.clearnlp.collection.tree.PrefixTree;
@@ -58,6 +60,9 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
  */
 public class NLPUtils
 {
+	
+	static public ServletContext context = null;
+	
 	private NLPUtils() {}
 	
 	/** @param in the inputstream for a headrule file. */
@@ -189,7 +194,8 @@ public class NLPUtils
 	{
 		try
 		{
-			return new ObjectInputStream(new XZInputStream(new BufferedInputStream(IOUtils.getInputStreamsFromClasspath(modelPath))));
+			//return new ObjectInputStream(new XZInputStream(new BufferedInputStream(IOUtils.getInputStreamsFromClasspath(modelPath))));
+			return new ObjectInputStream(new XZInputStream(new BufferedInputStream(NLPUtils.context.getResourceAsStream((modelPath)))));
 		}
 		catch (IOException e) {e.printStackTrace();}
 

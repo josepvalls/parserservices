@@ -23,6 +23,8 @@ import java.io.InputStreamReader;
 import java.util.HashMap;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.constituent.CTLibEn;
 import edu.emory.clir.clearnlp.coreference.dictionary.PathDictionary;
 import edu.emory.clir.clearnlp.coreference.mention.common.CommonNoun;
@@ -41,14 +43,18 @@ import edu.emory.clir.clearnlp.util.lang.TLanguage;
 public class EnglishCommonNounDetector extends AbstractCommonNounDetector{
 	private static final long serialVersionUID = 3474508950522490238L;
 	
-	public EnglishCommonNounDetector() { super(TLanguage.ENGLISH); }
+	public EnglishCommonNounDetector(ServletContext context) { 
+		super(context,TLanguage.ENGLISH); 
+	}
+
 
 	@Override
 	protected Map<String, CommonNoun> initDictionary() {
 		Map<String, CommonNoun> map = new HashMap<>();
 		
 		try {
-			InputStream dict = new FileInputStream(PathDictionary.ENG_COMMON_NOUN);
+			InputStream dict = context.getResourceAsStream(PathDictionary.ENG_COMMON_NOUN);
+			//InputStream dict = new FileInputStream(PathDictionary.ENG_COMMON_NOUN);
 			
 			BufferedReader reader = new BufferedReader(new InputStreamReader(dict));
 			String line; String[] attr;

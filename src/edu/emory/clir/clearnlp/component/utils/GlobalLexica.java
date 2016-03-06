@@ -44,8 +44,8 @@ public class GlobalLexica
 		Element eLexica = XmlUtils.getFirstElementByTagName(doc, "global");
 		if (eLexica == null) return;
 		
-		initDistributionalSemanticsWords(XmlUtils.getTrimmedTextContents(eLexica, "distributional_semantics"));
-		initNamedEntityDictionary(XmlUtils.getTrimmedTextContent(eLexica, "named_entity_dictionary"));
+		//initDistributionalSemanticsWords(XmlUtils.getTrimmedTextContents(eLexica, "distributional_semantics"));
+		//initNamedEntityDictionary(XmlUtils.getTrimmedTextContent(eLexica, "named_entity_dictionary"));
 	}
 	
 	static public void initNamedEntityDictionary(String path)
@@ -54,9 +54,11 @@ public class GlobalLexica
 			named_entity_dictionary = NLPUtils.getNERDictionary(path);
 	}
 	
-	static public void initDistributionalSemanticsWords(List<String> paths)
+	static public void initDistributionalSemanticsWords(String path)
 	{
-		distributional_semantics_words = paths.stream().map(path -> NLPUtils.getDistributionalSemantics(path)).collect(Collectors.toCollection(ArrayList::new));
+		distributional_semantics_words = new ArrayList<Map<String,Set<String>>>();
+		distributional_semantics_words.add(NLPUtils.getDistributionalSemantics(path));
+				
 	}
 	
 	static public PrefixTree<String,NERInfoSet> getNamedEntityDictionary()

@@ -18,7 +18,10 @@ package edu.emory.clir.clearnlp.coreference.mention.proper.detector;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
+import java.io.InputStreamReader;
 import java.io.Serializable;
+
+import javax.servlet.ServletContext;
 
 import edu.emory.clir.clearnlp.collection.ngram.Unigram;
 import edu.emory.clir.clearnlp.coreference.mention.proper.ProperNoun;
@@ -38,15 +41,16 @@ public abstract class AbstractProperNounDetector implements Serializable{
 	private static final long serialVersionUID = -241011226924650852L;
 	
 	protected TLanguage language;
+	protected ServletContext context;
 	
-	public AbstractProperNounDetector(TLanguage l){ language = l; }
+	public AbstractProperNounDetector(ServletContext context, TLanguage l){ language = l; this.context = context;}
 	
 	abstract public boolean isProperNoun(DEPTree tree, DEPNode node);
 	
 	abstract public ProperNoun getProperNoun(DEPTree tree, DEPNode node);
 	
 	protected void addDictionary(InputStream in, Unigram<String> map){
-		BufferedReader reader = IOUtils.createBufferedReader(in);
+		BufferedReader reader = new BufferedReader(new InputStreamReader(in));
 		String line, token;
 		String[] t;
 		int count;

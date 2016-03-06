@@ -18,6 +18,8 @@ package edu.emory.clir.clearnlp.coreference.mention.pronoun.detector;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.pronoun.Pronoun;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTree;
@@ -33,10 +35,12 @@ public abstract class AbstractPronounDetector implements Serializable{
 	
 	protected TLanguage language;
 	protected Map<String, Pronoun> m_pronouns;
-	
-	public AbstractPronounDetector(TLanguage l){ 
-		language = l; 
+	ServletContext context;
+	public AbstractPronounDetector(ServletContext context,TLanguage l){ 
+		language = l;
+		this.context = context;
 		m_pronouns = initDictionary();
+		
 	}
 	
 	abstract protected  Map<String, Pronoun> initDictionary();

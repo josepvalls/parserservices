@@ -113,8 +113,11 @@ public String getHelp() {
       ObjectStream<String> lineStream =
         new PlainTextByLineStream(new InputStreamReader(System.in));
 */
-      PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
-      perfMon.start();
+      }
+  }
+    public static void parse(ParserModel model,String line, PrintWriter printWriter,boolean showTopK, int numParses, opennlp.tools.parser.Parser parser) {
+      //PerformanceMonitor perfMon = new PerformanceMonitor(System.err, "sent");
+      //perfMon.start();
       /*
       try {
         String line;
@@ -135,7 +138,7 @@ public String getHelp() {
               //parses[pi].show();
               printWriter.println(parses[pi].toString());
 
-              perfMon.incrementCounter();
+              //perfMon.incrementCounter();
             }
           /*}
         }
@@ -144,8 +147,7 @@ public String getHelp() {
         CmdLineUtil.handleStdinIoError(e);
       }
 */
-      perfMon.stopAndPrintFinalResult();
-    }
+      //perfMon.stopAndPrintFinalResult();
   }
 
 @Override

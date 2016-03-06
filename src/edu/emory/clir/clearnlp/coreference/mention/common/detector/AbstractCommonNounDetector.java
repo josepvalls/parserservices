@@ -18,6 +18,8 @@ package edu.emory.clir.clearnlp.coreference.mention.common.detector;
 import java.io.Serializable;
 import java.util.Map;
 
+import javax.servlet.ServletContext;
+
 import edu.emory.clir.clearnlp.coreference.mention.common.CommonNoun;
 import edu.emory.clir.clearnlp.dependency.DEPNode;
 import edu.emory.clir.clearnlp.dependency.DEPTree;
@@ -33,10 +35,13 @@ public abstract class AbstractCommonNounDetector implements Serializable{
 
 	protected TLanguage language;
 	protected Map<String, CommonNoun> m_common_nouns;
+	protected ServletContext context;
 	
-	public AbstractCommonNounDetector(TLanguage l){ 
+	public AbstractCommonNounDetector(ServletContext context, TLanguage l){ 
 		language = l;
+		this.context = context;
 		m_common_nouns = initDictionary();
+		
 	}
 
 	abstract protected  Map<String, CommonNoun> initDictionary();
